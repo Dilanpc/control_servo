@@ -65,12 +65,10 @@ void MainWindow::readData(){
 
 
 void MainWindow::updateAngle(){
-    if (pressingDown){
-        angle--;
+    if (pressingDown || pressingUp){
         sendData();
-    }else if(pressingUp){
-        angle++;
-        sendData();
+        if(pressingUp) angle++;
+        else angle --;
     }
     if (angle < 0) angle = 0;
     if (angle > 180) angle = 180;

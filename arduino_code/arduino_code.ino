@@ -13,12 +13,12 @@ void setup(){
 void loop(){
   // read entrance
   if (Serial.available() >= 4){
-    if (Serial.peek() != '\n'){
+    if (Serial.peek() != '\n' && Serial.peek() != '\r'){
       // se reciben número en ASCII, por ello se resta el caracter '0' en cada dígito
       angle = (Serial.read() - '0')*100 + (Serial.read() - '0')*10 + Serial.read() - '0';
       Serial.println(angle);
     }
-    printAll();
+    clear();
   }
 
   servo.write(angle);
