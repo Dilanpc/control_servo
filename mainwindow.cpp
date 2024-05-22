@@ -74,11 +74,15 @@ void MainWindow::updateAngle(){
         sendData();
         if(pressingUp) angle++;
         else angle --;
-    }
-    if (angle < 0) angle = 0;
-    if (angle > 180) angle = 180;
 
-    ui->angleTxt->setText(QString::number(angle));
+        if (angle < 0) angle = 0;
+        if (angle > 180) angle = 180;
+
+        ui->angleTxt->setText(QString::number(angle));
+    }
+
+
+
 
 }
 
@@ -104,5 +108,19 @@ void MainWindow::on_btnUp_pressed()
 void MainWindow::on_btnUp_released()
 {
     pressingUp = false;
+}
+
+
+
+
+void MainWindow::on_angleTxt_editingFinished()
+{
+    angle = ui->angleTxt->text().toInt();
+    if (angle < 0) angle = 0;
+    if (angle > 180) angle = 180;
+
+    ui->angleTxt->setText(QString::number(angle));
+
+    sendData();
 }
 

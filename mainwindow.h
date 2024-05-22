@@ -47,13 +47,14 @@ private slots:
 
     void on_btnDown_pressed();
 
-
     void on_btnDown_released();
 
     void on_btnUp_pressed();
 
     void on_btnUp_released();
 
+
+    void on_angleTxt_editingFinished();
 
 private:
     Ui::MainWindow *ui;

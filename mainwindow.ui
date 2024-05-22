@@ -87,25 +87,25 @@ QPushButton:pressed {
      <bool>false</bool>
     </property>
    </widget>
-   <widget class="QLabel" name="angleTxt">
+   <widget class="QLineEdit" name="angleTxt">
     <property name="geometry">
      <rect>
       <x>310</x>
-      <y>240</y>
-      <width>111</width>
+      <y>230</y>
+      <width>113</width>
       <height>61</height>
      </rect>
     </property>
     <property name="font">
      <font>
-      <pointsize>14</pointsize>
+      <pointsize>20</pointsize>
      </font>
     </property>
     <property name="styleSheet">
      <string notr="true">color: &quot;white&quot;;</string>
     </property>
     <property name="text">
-     <string>ANGLE</string>
+     <string>90</string>
     </property>
    </widget>
   </widget>
