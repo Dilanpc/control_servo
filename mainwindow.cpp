@@ -9,7 +9,23 @@ MainWindow::MainWindow(QWidget *parent)
     ui->setupUi(this);
 
     if (conectSerial()) qDebug() << "Conectado";
-    else qDebug() << "Erro en la conexión serial";
+    else qDebug() << "Error en la conexión serial";
+
+    // Configurar el temporizador para llamar a updateAngle() cada segundo
+    angleTimer = new QTimer(this);
+    connect(angleTimer, &QTimer::timeout, this, &MainWindow::updateAngle);
+    angleTimer->start(50);
+
+
+    // Configurar el temporizador para llamar a readData() cada segundo
+    readDataTimer = new QTimer(this);
+    connect(readDataTimer, &QTimer::timeout, this, &MainWindow::readData);
+    readDataTimer->start(500);
+
+    // Configurar el temporizador para llamar a sendData() cada segundo
+    sendDataTimer = new QTimer(this);
+    connect(sendDataTimer, &QTimer::timeout, this, &MainWindow::sendData);
+    sendDataTimer->start(1000);
 }
 
 MainWindow::~MainWindow()
@@ -30,39 +46,65 @@ bool MainWindow::conectSerial(){
 
 
 void MainWindow::sendData(){
+    QString str = QString("%1").arg(angle, 3, 10, QLatin1Char('0')) + '\n';
+    // se envian 4 bytes
+    QByteArray data = str.toUtf8();
 
-    char data = 'a';
-    serial.write(&data);
-
-    readData();
+    serial.write(data);
 
 }
 
 
 void MainWindow::readData(){
-    QThread::msleep(200);
-    if (serial.waitForReadyRead(200)){
+
+    if (serial.bytesAvailable() >= 4){
         QByteArray data = serial.readAll();
-        qDebug() << data;
+        qDebug() << "recibido: " << data;
     }
 }
 
 
-void MainWindow::on_btnUp_clicked(bool checked)
-{
-    // qDebug()<< checked;
+void MainWindow::updateAngle(){
+    if (pressingDown){
+        angle--;
+        sendData();
+    }else if(pressingUp){
+        angle++;
+        sendData();
+    }
+    if (angle < 0) angle = 0;
+    if (angle > 180) angle = 180;
+
+    ui->angleTxt->setText(QString::number(angle));
+
 }
+
+
 
 
 void MainWindow::on_btnDown_pressed()
 {
-    qDebug() << "Pressed";
-    sendData();
+    pressingDown = true;
 }
 
 
-void MainWindow::on_btnUp_toggled(bool checked)
+
+
+void MainWindow::on_btnDown_released()
 {
-    qDebug() << checked;
+    pressingDown = false;
+
+}
+
+
+void MainWindow::on_btnUp_pressed()
+{
+    pressingUp = true;
+}
+
+
+void MainWindow::on_btnUp_released()
+{
+    pressingUp = false;
 }
 

@@ -5,6 +5,7 @@
 #include <QSerialPort>
 #include <QDebug>
 #include <QThread>
+#include <QTimer>
 
 QT_BEGIN_NAMESPACE
 namespace Ui {
@@ -25,6 +26,14 @@ protected:
     const QString portName = "COM3";
 
     int angle = 90;
+    void updateAngle();
+    QTimer* angleTimer;
+
+    bool pressingDown = false;
+    bool pressingUp = false;
+
+    QTimer* readDataTimer;
+    QTimer* sendDataTimer;
 
     void sendData();
 
@@ -34,11 +43,15 @@ protected:
 
 
 private slots:
-    void on_btnUp_clicked(bool checked);
 
     void on_btnDown_pressed();
 
-    void on_btnUp_toggled(bool checked);
+
+    void on_btnDown_released();
+
+    void on_btnUp_pressed();
+
+    void on_btnUp_released();
 
 private:
     Ui::MainWindow *ui;
