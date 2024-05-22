@@ -8,7 +8,7 @@ MainWindow::MainWindow(QWidget *parent)
 {
     ui->setupUi(this);
 
-    if (conectSerial()) qDebug() << "Conectado";
+    if (connectSerial()) qDebug() << "Conectado";
     else qDebug() << "Error en la conexión serial";
 
     // Configurar el temporizador para llamar a updateAngle() cada segundo
@@ -33,7 +33,11 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-bool MainWindow::conectSerial(){
+
+
+// SERIAL CONNECTION
+
+bool MainWindow::connectSerial(){
     serial.setPortName(portName);
 
     if (serial.open(QIODevice::ReadWrite)){
@@ -41,17 +45,15 @@ bool MainWindow::conectSerial(){
         return true;
     }
     return false;
-
 }
 
 
 void MainWindow::sendData(){
-    QString str = QString("%1").arg(angle, 3, 10, QLatin1Char('0')) + '\n';
+    QString str = '@' + QString("%1").arg(angle, 3, 10, QLatin1Char('0'));
     // se envian 4 bytes
     QByteArray data = str.toUtf8();
 
     serial.write(data);
-
 }
 
 
@@ -63,6 +65,9 @@ void MainWindow::readData(){
     }
 }
 
+
+
+// ANGLE
 
 void MainWindow::updateAngle(){
     if (pressingDown || pressingUp){
@@ -80,27 +85,22 @@ void MainWindow::updateAngle(){
 
 
 
+
+// BUTTONS
+
 void MainWindow::on_btnDown_pressed()
 {
     pressingDown = true;
 }
-
-
-
-
 void MainWindow::on_btnDown_released()
 {
     pressingDown = false;
 
 }
-
-
 void MainWindow::on_btnUp_pressed()
 {
     pressingUp = true;
 }
-
-
 void MainWindow::on_btnUp_released()
 {
     pressingUp = false;

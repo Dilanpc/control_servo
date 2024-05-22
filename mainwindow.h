@@ -39,7 +39,8 @@ protected:
 
     void readData();
 
-    bool conectSerial();
+    bool connectSerial();
+
 
 
 private slots:
@@ -52,6 +53,7 @@ private slots:
     void on_btnUp_pressed();
 
     void on_btnUp_released();
+
 
 private:
     Ui::MainWindow *ui;

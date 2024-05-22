@@ -13,10 +13,10 @@ void setup(){
 void loop(){
   // read entrance
   if (Serial.available() >= 4){
-    if (Serial.peek() != '\n' && Serial.peek() != '\r'){
-      // se reciben número en ASCII, por ello se resta el caracter '0' en cada dígito
+    if (Serial.read() == '@'){
+      // number is received in ASCII, therefore the char '0' is subtracted from each digit
       angle = (Serial.read() - '0')*100 + (Serial.read() - '0')*10 + Serial.read() - '0';
-      Serial.println(angle);
+      
     }
     clear();
   }
